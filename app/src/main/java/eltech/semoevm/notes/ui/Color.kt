@@ -10,7 +10,7 @@ val teal200 = Color(0xFF03DAC5)
 val backgroundPrimaryDark = Color(0xff212121)
 val backgroundPrimaryElevatedDark = Color(0xff484848)
 val textPrimaryDark = Color(0xfff5f5f5)
-val textSecondaryDark = Color(0xbdbdbd)
+val textSecondaryDark = Color(0xffbdbdbd)
 val greenDark = Color(0xff1b5e20)
 
 val backgroundPrimaryLight = Color(0xfffafafa)

@@ -3,12 +3,17 @@ package eltech.semoevm.notes
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.setContent
+import eltech.semoevm.notes.data.model.Note
+import eltech.semoevm.notes.data.model.TextNote
 import eltech.semoevm.notes.note.NotePage
 import eltech.semoevm.notes.start.StartPage
+import eltech.semoevm.notes.start.isDialogOpened
 import eltech.semoevm.notes.ui.NotesTheme
 import java.io.Serializable
 
@@ -17,6 +22,7 @@ class MainActivity : AppCompatActivity(), AppStateRenderer {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         currentSate = if (savedInstanceState?.containsKey(SAVED_STATE) == true) {
             savedInstanceState.get(SAVED_STATE) as AppState
         } else {
@@ -42,6 +48,10 @@ class MainActivity : AppCompatActivity(), AppStateRenderer {
     }
 
     override fun onBackPressed() {
+        if (isDialogOpened.invoke()) {
+            return
+        }
+
         if (currentSate != AppState.StartPage) {
             currentSate = AppState.StartPage
             render(currentSate!!)
@@ -51,9 +61,15 @@ class MainActivity : AppCompatActivity(), AppStateRenderer {
     }
 
     override fun render(state: AppState) {
-        setContent {
-            NotesTheme {
-                RenderState(state)
+        showScreen(state)
+    }
+
+    private fun showScreen(state: AppState) {
+        runOnUiThread {
+            setContent {
+                NotesTheme {
+                    RenderState(state)
+                }
             }
         }
     }
@@ -76,12 +92,14 @@ interface AppStateRenderer {
 }
 
 enum class AppState(private var initObj: Serializable? = null) {
-    StartPage, Note; // ...
+    StartPage, Note, AddTextNote;
 
     fun setInitObj(obj: Serializable): AppState {
         this.initObj = obj
         return this
     }
+
+    fun getInitObj() = initObj
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -89,7 +107,7 @@ enum class AppState(private var initObj: Serializable? = null) {
 fun RenderState(state: AppState) {
     when (state) {
         AppState.StartPage -> StartPage()
-        AppState.Note -> NotePage()
-        // .. TODO
+        AppState.Note -> {} // TODO NIKITA
+        AppState.AddTextNote -> {} // TODO IVAN
     }
 }
