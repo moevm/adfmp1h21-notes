@@ -59,7 +59,7 @@ fun TextNote.updateCreatedTime(): TextNote {
 }
 
 fun CheckableNoteWithItems.updateEditedTime(): CheckableNoteWithItems {
-    val newNote = this.copy(note = this.note.copy(timeCreated = System.currentTimeMillis()))
+    val newNote = this.note.copy(timeCreated = System.currentTimeMillis())
     NotesApp.notesDao.updateNote(newNote)
-    return newNote
+    return this.copy(note = newNote)
 }
