@@ -107,7 +107,7 @@ enum class AppState(private var initObj: Serializable? = null) {
 fun RenderState(state: AppState) {
     when (state) {
         AppState.StartPage -> StartPage()
-        AppState.Note -> {} // TODO NIKITA
+        AppState.Note -> NotePage(state.getInitObj() as Note)
         AppState.AddTextNote -> {} // TODO IVAN
     }
 }
