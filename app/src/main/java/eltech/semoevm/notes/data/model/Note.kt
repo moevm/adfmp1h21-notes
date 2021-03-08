@@ -1,12 +1,38 @@
 package eltech.semoevm.notes.data.model
 
+import androidx.room.*
 import java.io.Serializable
 import java.util.*
 
-sealed class Note(val id: String = UUID.randomUUID().toString()): Serializable
+interface Note: Serializable
 
-data class TextNote(val title: String, val text: String): Note(), Serializable
+@Entity(tableName = "TextNote")
+data class TextNote(
+    @PrimaryKey(autoGenerate = true) var id: Long? = null,
+    val title: String,
+    val text: String,
+    val timeEdited: Long = System.currentTimeMillis()
+) : Note, Serializable
 
-data class CheckableNote(val title: String, val items: CheckableItem): Note(), Serializable
+@Entity(tableName = "CheckableNote")
+data class CheckableNote(
+    @PrimaryKey(autoGenerate = true) var id: Long? = null,
+    val title: String,
+    val timeCreated: Long = System.currentTimeMillis()
+) : Note, Serializable
 
-data class CheckableItem(val text: String, val isChecked: Boolean = false): Serializable
+
+data class CheckableNoteWithItems(
+    @Embedded
+    val note: CheckableNote,
+    @Relation(parentColumn = "id", entityColumn = "noteId")
+    val items: List<CheckableItem>,
+) : Note, Serializable
+
+@Entity(tableName = "CheckableItem")
+data class CheckableItem(
+    @PrimaryKey(autoGenerate = true) var id: Long? = null,
+    val noteId: Long = -1,
+    val text: String,
+    val isChecked: Boolean = false
+): Serializable
