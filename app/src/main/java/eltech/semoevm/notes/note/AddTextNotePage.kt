@@ -222,5 +222,11 @@ fun AddTextNotePage(textNote: TextNote?) {
 }
 
 private fun saveNote(context: Context, title: String, text: String) {
-
+    if (title.isBlank() || text.isBlank()) return
+    thread(start = true) {
+        var note = TextNote(title = title, text = text)
+        val id = NotesApp.notesDao.insertNote(note)
+        note = note.copy(id = id)
+        context.startActivity(MainActivity.createStateIntent(context, AppState.Note.setInitObj(note)))
+    }
 }
