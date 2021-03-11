@@ -15,6 +15,7 @@ import eltech.semoevm.notes.note.NotePage
 import eltech.semoevm.notes.start.StartPage
 import eltech.semoevm.notes.start.isDialogOpened
 import eltech.semoevm.notes.ui.NotesTheme
+import eltech.semoevm.notes.note.AddTextNotePage
 import java.io.Serializable
 
 class MainActivity : AppCompatActivity(), AppStateRenderer {
@@ -108,6 +109,6 @@ fun RenderState(state: AppState) {
     when (state) {
         AppState.StartPage -> StartPage()
         AppState.Note -> NotePage(state.getInitObj() as Note)
-        AppState.AddTextNote -> {} // TODO IVAN
+        AppState.AddTextNote -> AddTextNotePage(state.getInitObj() as? TextNote?)
     }
 }
