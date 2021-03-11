@@ -193,6 +193,31 @@ fun AddTextNotePage(textNote: TextNote?) {
             }
         }
 
+        Button(
+            modifier = Modifier
+                .height(60.dp)
+                .constrainAs(bottomButton) {
+                    bottom.linkTo(parent.bottom)
+                }
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(backgroundColor = if (isSystemInDarkTheme()) greenDark else greenLight),
+            onClick = {
+                if (textNote != null) {
+                    thread {
+                        val newNote = textNote.copy(title = titleValue.value.text, text = textValue.value.text, timeEdited = System.currentTimeMillis())
+                        NotesApp.notesDao.updateTextNote(newNote)
+                        context.startActivity(MainActivity.createStateIntent(context, AppState.Note.setInitObj(newNote)))
+                    }
+                } else {
+                    saveNote(context, titleValue.value.text, textValue.value.text)
+                }
+            }) {
+            Text(
+                text = "Сохранить заметку",
+                fontSize = 22.sp,
+                color = if (isSystemInDarkTheme()) textPrimaryDark else Color.White
+            )
+        }
     }
 }
 
