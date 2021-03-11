@@ -161,7 +161,7 @@ fun AddTextNotePage(textNote: TextNote?) {
                                 .wrapContentHeight()
                                 .alpha(0.33f),
                             color = textColor,
-                            fontSize = 25.sp,
+                            fontSize = 23.sp,
                             fontFamily = FontFamily.SansSerif
                         )
                     },
