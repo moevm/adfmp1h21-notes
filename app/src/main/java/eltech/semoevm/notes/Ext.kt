@@ -6,6 +6,7 @@ import android.content.Intent
 import android.text.format.DateUtils
 import eltech.semoevm.notes.data.model.CheckableNoteWithItems
 import eltech.semoevm.notes.data.model.TextNote
+import java.lang.RuntimeException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,6 +38,9 @@ fun Context.sharePlainText(subject: String, text: String) {
 }
 
 fun TextNote.toShareText(): String {
+    if (title.isEmpty() || text.isEmpty()) {
+        throw RuntimeException("can not share empty note: $this")
+    }
     return StringBuilder().apply {
         append(title + "\n\n")
         append(text)
