@@ -164,9 +164,10 @@ private fun CheckableNotePage(checkableNote: CheckableNoteWithItems) {
                 onRemoveItemAccepted?.invoke()
             })
 
-    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val backgroundColor =
-                if (isSystemInDarkTheme()) backgroundPrimaryDark else backgroundPrimaryLight
+    val backgroundColor =
+        if (isSystemInDarkTheme()) backgroundPrimaryDark else backgroundPrimaryLight
+
+    ConstraintLayout(modifier = Modifier.fillMaxSize().background(backgroundColor)) {
 
         val (header, title, itemsList, newItemFiled) = createRefs()
 
@@ -174,7 +175,6 @@ private fun CheckableNotePage(checkableNote: CheckableNoteWithItems) {
                 modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp)
-                        .background(backgroundColor)
                         .constrainAs(header) {
                             start.linkTo(parent.start)
                             top.linkTo(parent.top)
