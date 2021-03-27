@@ -51,6 +51,7 @@ fun StartPage() {
     val openCreateNoteDialog = remember { mutableStateOf(false) }
     val openAddCheckableNoteDialog = remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val isTextNoteAtIndex: (Int) -> Boolean = { notes.value[it] is TextNote }
 
     isDialogOpened = {
         if (openAddCheckableNoteDialog.value) {
@@ -143,7 +144,7 @@ fun StartPage() {
         DialogWithTwoButtons(
             firstText = "Заметка",
             secondText = "Перечень",
-            onFirstClicked = { context.startActivity(MainActivity.createStateIntent(context, AppState.AddTextNote)) },
+            onFirstClicked = { context.startActivity(MainActivity.createStateIntent(context, AppState.AddTextNote.setInitObj(null))) },
             onSecondClicked = {
                 openCreateNoteDialog.value = false
                 openAddCheckableNoteDialog.value = true
@@ -156,6 +157,7 @@ fun StartPage() {
 
     if (openNoteLongClickDialog.value) {
         DialogWithTwoButtons(
+            isFirstButtonVisible = longClickedNoteIndex?.let { isTextNoteAtIndex.invoke(it) } ?: false,
             firstText = "Редактировать",
             secondText = "Удалить",
             onFirstClicked = {
