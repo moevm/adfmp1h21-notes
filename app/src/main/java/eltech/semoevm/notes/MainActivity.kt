@@ -95,7 +95,7 @@ interface AppStateRenderer {
 enum class AppState(private var initObj: Serializable? = null) {
     StartPage, Note, AddTextNote;
 
-    fun setInitObj(obj: Serializable): AppState {
+    fun setInitObj(obj: Serializable?): AppState {
         this.initObj = obj
         return this
     }

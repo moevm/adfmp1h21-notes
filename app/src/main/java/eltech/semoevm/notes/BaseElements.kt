@@ -159,7 +159,8 @@ fun DialogWithTwoButtons(
     secondText: String,
     onFirstClicked: () -> Unit,
     onSecondClicked: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    isFirstButtonVisible: Boolean = true
 ) {
     Dialog(
         properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true),
@@ -176,28 +177,30 @@ fun DialogWithTwoButtons(
             textPrimaryLight
         }
         Column {
-            Button(
-                modifier = Modifier
-                    .height(50.dp)
-                    .width(width),
-                colors = ButtonDefaults.buttonColors(backgroundColor),
-                onClick = onFirstClicked
-            ) {
-                Text(
-                    text = firstText,
-                    fontSize = 22.sp,
-                    color = textColor
+            if (isFirstButtonVisible) {
+                Button(
+                    modifier = Modifier
+                        .height(50.dp)
+                        .width(width),
+                    colors = ButtonDefaults.buttonColors(backgroundColor),
+                    onClick = onFirstClicked
+                ) {
+                    Text(
+                        text = firstText,
+                        fontSize = 22.sp,
+                        color = textColor
+                    )
+                }
+
+                Spacer(
+                    modifier = Modifier
+                        .height(2.dp)
+                        .background(
+                            if (isSystemInDarkTheme()) backgroundPrimaryDark
+                            else backgroundPrimaryLight
+                        )
                 )
             }
-
-            Spacer(
-                modifier = Modifier
-                    .height(2.dp)
-                    .background(
-                        if (isSystemInDarkTheme()) backgroundPrimaryDark
-                        else backgroundPrimaryLight
-                    )
-            )
 
             Button(
                 modifier = Modifier
