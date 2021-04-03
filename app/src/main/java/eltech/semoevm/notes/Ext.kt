@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.text.format.DateUtils
+import eltech.semoevm.notes.data.model.CheckableItem
 import eltech.semoevm.notes.data.model.CheckableNoteWithItems
 import eltech.semoevm.notes.data.model.TextNote
 import java.lang.RuntimeException
@@ -67,3 +68,5 @@ fun CheckableNoteWithItems.updateEditedTime(): CheckableNoteWithItems {
     NotesApp.notesDao.updateNote(newNote)
     return this.copy(note = newNote)
 }
+
+fun List<CheckableItem>.sortByChecked() = this.sortedByDescending { it.id }.sortedBy { it.isChecked }

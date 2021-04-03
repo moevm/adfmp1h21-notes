@@ -33,12 +33,17 @@ import kotlin.concurrent.thread
 @Composable
 fun AddCheckableNoteTitlePage() {
     val context = LocalContext.current
-    AddCheckableNoteTitleDialog(onSaveClicked = {
+    AddTextDialog(onSaveClicked = {
         thread {
             var note = CheckableNote(title = it)
             note = note.copy(id = NotesApp.notesDao.insertNote(note))
             val checkableNoteWithItems = CheckableNoteWithItems(note = note, items = emptyList())
-            context.startActivity(MainActivity.createStateIntent(context, AppState.Note.setInitObj(checkableNoteWithItems)))
+            context.startActivity(
+                MainActivity.createStateIntent(
+                    context,
+                    AppState.Note.setInitObj(checkableNoteWithItems)
+                )
+            )
         }
     }, onDismiss = {
         context.startActivity(MainActivity.createStateIntent(context, AppState.StartPage))
@@ -46,7 +51,12 @@ fun AddCheckableNoteTitlePage() {
 }
 
 @Composable
-private fun AddCheckableNoteTitleDialog(onSaveClicked: (String) -> Unit, onDismiss: () -> Unit) {
+fun AddTextDialog(
+    onSaveClicked: (String) -> Unit,
+    onDismiss: () -> Unit,
+    placeholder: String = "Название",
+    text: String = ""
+) {
     val backgroundColor = if (isSystemInDarkTheme()) {
         backgroundPrimaryElevatedDark
     } else {
@@ -57,10 +67,12 @@ private fun AddCheckableNoteTitleDialog(onSaveClicked: (String) -> Unit, onDismi
     } else {
         textPrimaryLight
     }
-    val textValue = remember { mutableStateOf(TextFieldValue("")) }
+    val textValue = remember { mutableStateOf(TextFieldValue(text)) }
 
     Row(
-        modifier = Modifier.fillMaxSize().background(Color(0x20000000)),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0x20000000)),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -81,7 +93,7 @@ private fun AddCheckableNoteTitleDialog(onSaveClicked: (String) -> Unit, onDismi
                 backgroundColor = Color.Transparent,
                 placeholder = {
                     Text(
-                        text = "Название",
+                        text = placeholder,
                         modifier = Modifier
                             .wrapContentHeight()
                             .alpha(0.5f),
